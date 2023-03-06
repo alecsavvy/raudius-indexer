@@ -2,3 +2,4 @@
 /keystore
 /logs
 /nethermind_db
+.env

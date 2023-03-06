@@ -1,26 +1,42 @@
 use ethcontract::prelude::*;
+use serde::Deserialize;
 use std::{error::Error, str::FromStr};
 
 mod entity_manager;
 use entity_manager::EntityManager;
+
+mod event_handler;
+use event_handler::events_handler;
 
 use tracing::*;
 use tracing_subscriber;
 
 use ethcontract::web3::types::U64;
 
-// config constants for now
-const RPC_GATEWAY: &'static str = "https://acdc-gateway.audius.co";
-const ENTITY_MANAGER_ADDRESS: &'static str = "0x1Cd8a543596D499B9b6E7a6eC15ECd2B7857Fd64";
+pub type AppResult<T = ()> = Result<T, Box<dyn Error>>;
+
+#[derive(Debug, Deserialize)]
+pub struct Config {
+    pub rpc_gateway: String,
+    pub entity_manager_address: String,
+}
 
 #[tokio::main]
-async fn main() -> Result<(), Box<dyn Error>> {
+async fn main() -> AppResult {
+    use dotenv;
+    dotenv::dotenv()?;
+
     tracing_subscriber::fmt::init();
 
-    let http = Http::new(RPC_GATEWAY)?;
+    let Config {
+        rpc_gateway,
+        entity_manager_address,
+    } = envy::from_env::<Config>()?;
+
+    let http = Http::new(&rpc_gateway)?;
     let web3 = Web3::new(http);
 
-    let em_address = Address::from_str(ENTITY_MANAGER_ADDRESS)?;
+    let em_address = Address::from_str(&entity_manager_address)?;
     let em_contract = EntityManager::with_deployment_info(&web3, em_address, None);
 
     let current_block = web3.eth().block_number().await?;
@@ -37,9 +53,7 @@ async fn main() -> Result<(), Box<dyn Error>> {
         .query()
         .await?;
 
-    for event in events {
-        info!("event: {:?}", event);
-    }
+    events_handler(events).await?;
 
     Ok(())
 }
