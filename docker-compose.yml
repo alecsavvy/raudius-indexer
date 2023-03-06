@@ -1,0 +1,15 @@
+version: "3.5"
+services:
+    nethermind:
+        image: nethermind/nethermind:latest
+        command: --config poacore --JsonRpc.Enabled true --JsonRpc.Host 0.0.0.0 --HealthChecks.Enabled true
+        restart: unless-stopped
+        container_name: nethermind
+        volumes:
+            - ./nethermind_db/:/nethermind/nethermind_db/
+            - ./keystore/:/nethermind/keystore/
+            - ./logs/:/nethermind/logs/
+        ports:
+          - "30300:30300"
+          - "30300:30300/udp"
+          - "8545:8545"

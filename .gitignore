@@ -1,1 +1,4 @@
 /target
+/keystore
+/logs
+/nethermind_db
