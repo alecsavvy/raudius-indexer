@@ -45,6 +45,8 @@ async fn main() -> AppResult {
         "Entity Manager Contract: {:#?}, Block Number: {}",
         em_contract, current_block
     );
+
+    // TODO: paginate this
     let events = em_contract
         .events()
         .manage_entity()
