@@ -1,1 +1,0 @@
-docker run -it -p 8545:8545 nethermind/nethermind --config poacore --JsonRpc.Enabled true --JsonRpc.Host 0.0.0.0 --HealthChecks.Enabled true
