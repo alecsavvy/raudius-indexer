@@ -1,56 +1,57 @@
-use std::str::FromStr;
-
 use ethcontract::Event;
-use strum::EnumString;
 use tracing::info;
 
-use crate::{entity_manager::entity_manager::event_data::ManageEntity, AppResult};
+use crate::{
+    actions::Actions,
+    entity_manager::entity_manager::{
+        event_data::{ManageEntity, ManageIsVerified},
+        Event as EmEvent,
+    },
+    AppResult,
+};
 
-// TODO: this list is not exhaustive
-// https://github.com/AudiusProject/audius-protocol/blob/27d92c574ccc1b445e408cca7e541711ccb0eca0/discovery-provider/src/tasks/entity_manager/utils.py
-#[derive(Debug, EnumString)]
-pub enum Events {
-    // Playlist Events
-    CreatePlaylist(),
-    UpdatePlaylist(),
-    DeletePlaylist(),
-    // Track Events
-    CreateTrack(),
-    UpdateTrack(),
-    DeleteTrack(),
-    SaveTrack(),
-    // User Events
-    CreateUser(),
-    UpdateUser(),
-    VerifyUser(),
-    FollowUser(),
-    UpdateUserReplicaSet(),
-    // Notification Events
-    ViewNotification(),
-    CreateNotification(),
-    ViewPlaylistNotification(),
-}
-
-impl TryFrom<Event<ManageEntity>> for Events {
-    type Error = Box<dyn std::error::Error>;
-
-    fn try_from(value: Event<ManageEntity>) -> AppResult<Self> {
-        let event = &format!("{}{}", value.data.action, value.data.entity_type);
-        let event = Events::from_str(event)?;
-        Ok(event)
-    }
-}
-
-pub async fn events_handler(events: Vec<Event<ManageEntity>>) -> AppResult {
-    // TODO: make this atomic
-    for event in events {
-        handle_event(event).await?;
-    }
+pub async fn handle_event(event: Event<EmEvent>) -> AppResult {
+    match event.data {
+        EmEvent::ManageEntity(me) => handle_entity(&me).await?,
+        EmEvent::ManageIsVerified(miv) => handle_is_verified(&miv).await?,
+    };
     Ok(())
 }
 
-async fn handle_event(event: Event<ManageEntity>) -> AppResult {
-    let event: Events = event.try_into()?;
-    info!("{:#?}", event);
+/// Handles the conversion of a raw ManageEntity event
+async fn handle_entity(event: &ManageEntity) -> AppResult {
+    // 1. parse out kind of event we have for the cid type
+    // 2. get the primary content node from that user
+    // 3. attempt to gather the content from that node by the cid in event
+    // 4. if failure gather content replicas and try with those
+    // 5. serialize content into inner metadata structure based on event type
+    // 6. construct AppEvents variant and return
+
+    // UpdateUser for example
+    let command = format!("{}{}", event.action, event.entity_type);
+    let mut json = serde_json::to_value(event)?;
+
+    json["command"] = serde_json::Value::String(command);
+
+    // info!("{}", json);
+
+    let action = serde_json::from_value::<Actions>(json)?;
+    info!("{:?}", action);
+    /*
+    handle with SERDE
+       if event_type == EntityType.PLAYLIST:
+           cid_type[cid] = "playlist_data"
+       elif event_type == EntityType.TRACK:
+           cid_type[cid] = "track"
+       elif event_type == EntityType.USER:
+           cid_type[cid] = "user"
+    */
+
+    Ok(())
+}
+
+/// Handles the conversion of a raw ManageIsVerified event
+async fn handle_is_verified(event: &ManageIsVerified) -> AppResult {
+    info!("user {} is_verified {}", event.user_id, event.is_verified);
     Ok(())
 }
