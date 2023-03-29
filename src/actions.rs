@@ -22,6 +22,7 @@ pub enum Actions {
     UnrepostTrack(Track),
     SaveTrack(Track),
     UnsaveTrack(Track),
+    DeleteTrack(Track),
     // Playlist Actions
     SavePlaylist(Playlist),
     UnsavePlaylist(Playlist),
@@ -51,7 +52,7 @@ pub struct Notification {
     pub signer: String,
 }
 
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct Track {
     pub user_id: String,
     pub entity_id: String,

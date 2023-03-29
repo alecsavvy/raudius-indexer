@@ -3,23 +3,26 @@ use tracing::info;
 
 use crate::{
     actions::Actions,
+    db::TrackRepository,
     entity_manager::entity_manager::{
         event_data::{ManageEntity, ManageIsVerified},
         Event as EmEvent,
     },
+    handlers::tracks::create_track,
     AppResult,
 };
 
-pub async fn handle_event(event: Event<EmEvent>) -> AppResult {
+// TODO: wrap repos into one overall struct
+pub async fn handle_event(tracks_repo: TrackRepository, event: Event<EmEvent>) -> AppResult {
     match event.data {
-        EmEvent::ManageEntity(me) => handle_entity(&me).await?,
+        EmEvent::ManageEntity(me) => handle_entity(tracks_repo, &me).await?,
         EmEvent::ManageIsVerified(miv) => handle_is_verified(&miv).await?,
     };
     Ok(())
 }
 
 /// Handles the conversion of a raw ManageEntity event
-async fn handle_entity(event: &ManageEntity) -> AppResult {
+async fn handle_entity(tracks_repo: TrackRepository, event: &ManageEntity) -> AppResult {
     // 1. parse out kind of event we have for the cid type
     // 2. get the primary content node from that user
     // 3. attempt to gather the content from that node by the cid in event
@@ -30,24 +33,13 @@ async fn handle_entity(event: &ManageEntity) -> AppResult {
     // UpdateUser for example
     let command = format!("{}{}", event.action, event.entity_type);
     let mut json = serde_json::to_value(event)?;
-
     json["command"] = serde_json::Value::String(command);
-
-    // info!("{}", json);
-
     let action = serde_json::from_value::<Actions>(json)?;
-    info!("{:?}", action);
-    /*
-    handle with SERDE
-       if event_type == EntityType.PLAYLIST:
-           cid_type[cid] = "playlist_data"
-       elif event_type == EntityType.TRACK:
-           cid_type[cid] = "track"
-       elif event_type == EntityType.USER:
-           cid_type[cid] = "user"
-    */
 
-    Ok(())
+    match action {
+        Actions::CreateTrack(track) => create_track(tracks_repo, track).await,
+        _ => Ok(()),
+    }
 }
 
 /// Handles the conversion of a raw ManageIsVerified event
