@@ -11,6 +11,7 @@ pub enum Actions {
     // User Actions
     CreateUser(User),
     UpdateUser(User),
+    VerifyUser(User),
     FollowUser(User),
     UnfollowUser(User),
     SubscribeUser(User),
@@ -24,11 +25,15 @@ pub enum Actions {
     UnsaveTrack(Track),
     DeleteTrack(Track),
     // Playlist Actions
+    CreatePlaylist(Playlist),
+    UpdatePlaylist(Playlist),
     SavePlaylist(Playlist),
     UnsavePlaylist(Playlist),
     RepostPlaylist(Playlist),
     UnrepostPlaylist(Playlist),
+    DeletePlaylist(Playlist),
     // Notification Actions
+    CreateNotification(Notification),
     ViewNotification(Notification),
     ViewPlaylistNotification(Notification),
 }
@@ -36,7 +41,7 @@ pub enum Actions {
 // /*
 // ENTITIES, TODO MOVE THESE
 //  */
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct User {
     pub user_id: String,
     pub entity_id: String,

@@ -3,7 +3,7 @@ use tracing::info;
 
 use crate::{
     actions::Actions,
-    db::TrackRepository,
+    db::Repository,
     entity_manager::entity_manager::{
         event_data::{ManageEntity, ManageIsVerified},
         Event as EmEvent,
@@ -13,16 +13,16 @@ use crate::{
 };
 
 // TODO: wrap repos into one overall struct
-pub async fn handle_event(tracks_repo: TrackRepository, event: Event<EmEvent>) -> AppResult {
+pub async fn handle_event(repo: Repository, event: Event<EmEvent>) -> AppResult {
     match event.data {
-        EmEvent::ManageEntity(me) => handle_entity(tracks_repo, &me).await?,
+        EmEvent::ManageEntity(me) => handle_entity(repo, &me).await?,
         EmEvent::ManageIsVerified(miv) => handle_is_verified(&miv).await?,
     };
     Ok(())
 }
 
 /// Handles the conversion of a raw ManageEntity event
-async fn handle_entity(tracks_repo: TrackRepository, event: &ManageEntity) -> AppResult {
+async fn handle_entity(repo: Repository, event: &ManageEntity) -> AppResult {
     // 1. parse out kind of event we have for the cid type
     // 2. get the primary content node from that user
     // 3. attempt to gather the content from that node by the cid in event
@@ -37,7 +37,7 @@ async fn handle_entity(tracks_repo: TrackRepository, event: &ManageEntity) -> Ap
     let action = serde_json::from_value::<Actions>(json)?;
 
     match action {
-        Actions::CreateTrack(track) => create_track(tracks_repo, track).await,
+        Actions::CreateTrack(track) => create_track(&repo.tracks, track).await,
         _ => Ok(()),
     }
 }

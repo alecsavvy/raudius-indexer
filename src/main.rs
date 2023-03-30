@@ -15,7 +15,10 @@ mod db;
 mod event_handler;
 mod handlers;
 
-use crate::{db::TrackRepository, event_handler::handle_event};
+use crate::{
+    db::{tracks::TrackRepository, Repository},
+    event_handler::handle_event,
+};
 
 pub type AppResult<T = ()> = Result<T, Box<dyn Error>>;
 
@@ -44,7 +47,7 @@ async fn main() -> AppResult {
     let mongo = Client::with_options(mongo_options)?;
     let db = mongo.database("audius-discovery");
 
-    let tracks_repo = TrackRepository::new(db);
+    let repo = Repository::new(db);
 
     let http = Http::new(&rpc_gateway)?;
     let web3 = Web3::new(http);
@@ -69,10 +72,10 @@ async fn main() -> AppResult {
 
     loop {
         // cheap clone
-        let tracks_repo = tracks_repo.clone();
+        let repo = repo.clone();
         // TODO: execution errors are swallowed here
         if let Some(Ok(event)) = events.next().await {
-            if let Err(e) = handle_event(tracks_repo, event).await {
+            if let Err(e) = handle_event(repo, event).await {
                 error!("{:#?}", e);
             };
         }

@@ -1,4 +1,4 @@
-use mongodb::{bson::doc, error::Error, Client, Collection, Database};
+use mongodb::{bson::doc, error::Error, Collection, Database};
 
 use crate::actions::Track;
 
@@ -8,7 +8,7 @@ pub struct TrackRepository {
 }
 
 impl TrackRepository {
-    pub fn new(db: Database) -> Self {
+    pub fn new(db: &Database) -> Self {
         let collection = db.collection("tracks");
         Self { collection }
     }
