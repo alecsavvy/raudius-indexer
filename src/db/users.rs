@@ -1,4 +1,4 @@
-use mongodb::{bson::doc, error::Error, Client, Collection, Database};
+use mongodb::{bson::doc, error::Error, Collection, Database};
 
 use crate::actions::User;
 

@@ -1,7 +1,8 @@
-#[derive(Clone, Debug, PartialEq)]
-pub struct Model {
+use serde::{Deserialize, Serialize};
+
+#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
+pub struct BlockModel {
     pub blockhash: String,
     pub parenthash: Option<String>,
-    pub is_current: Option<bool>,
-    pub number: Option<i32>,
+    pub number: i32,
 }

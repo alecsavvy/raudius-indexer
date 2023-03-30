@@ -12,7 +12,6 @@ use crate::{
     AppResult,
 };
 
-// TODO: wrap repos into one overall struct
 pub async fn handle_event(repo: Repository, event: Event<EmEvent>) -> AppResult {
     match event.data {
         EmEvent::ManageEntity(me) => handle_entity(repo, &me).await?,
