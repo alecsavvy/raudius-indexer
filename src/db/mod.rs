@@ -2,6 +2,7 @@ use mongodb::Database;
 
 use self::{tracks::TrackRepository, users::UserRepository};
 
+pub mod entities;
 pub mod tracks;
 pub mod users;
 

@@ -15,10 +15,7 @@ mod db;
 mod event_handler;
 mod handlers;
 
-use crate::{
-    db::{tracks::TrackRepository, Repository},
-    event_handler::handle_event,
-};
+use crate::{db::Repository, event_handler::handle_event};
 
 pub type AppResult<T = ()> = Result<T, Box<dyn Error>>;
 
