@@ -1,4 +1,4 @@
-use axum::{extract::Path, Extension};
+use axum::{extract::Path, Extension, Json};
 
 use crate::{
     actions::User,
@@ -12,9 +12,10 @@ use crate::{
 pub async fn get_user(
     Extension(repo): Extension<Repository>,
     Path(user_id): Path<String>,
-) -> AppResult<UserResponse> {
-    let _user = repo.users.get(user_id.as_str()).await?;
-    Ok(UserResponse::default())
+) -> AppResult<Json<UserResponse>> {
+    //let _user = repo.users.get(user_id.as_str()).await?;
+    let res = Json(UserResponse::default());
+    Ok(res)
 }
 
 /*

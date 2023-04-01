@@ -1,3 +1,4 @@
+use error::AppError;
 use mongodb::{options::ClientOptions, Client};
 use serde::Deserialize;
 use std::error::Error;
@@ -11,6 +12,7 @@ mod actions;
 mod api;
 #[allow(dead_code)] // experimental
 mod db;
+mod error;
 mod event_handler;
 mod handlers;
 mod indexer;
@@ -19,7 +21,7 @@ mod server;
 
 use crate::db::Repository;
 
-pub type AppResult<T = ()> = Result<T, Box<dyn Error>>;
+pub type AppResult<T = ()> = Result<T, AppError>;
 
 #[derive(Debug, Deserialize, Clone)]
 pub struct Config {
