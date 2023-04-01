@@ -16,6 +16,7 @@ mod api;
 mod db;
 mod event_handler;
 mod handlers;
+mod routes;
 
 use crate::{db::Repository, event_handler::handle_event};
 
