@@ -1,8 +1,19 @@
-use crate::{actions::User, api::UserResponse, db::users::UserRepository, AppResult};
+use axum::{extract::Path, Extension};
+
+use crate::{
+    actions::User,
+    api::UserResponse,
+    db::{users::UserRepository, Repository},
+    AppResult,
+};
 /*
    REST ROUTES
 */
-pub async fn get_user() -> AppResult<UserResponse> {
+pub async fn get_user(
+    Extension(repo): Extension<Repository>,
+    Path(user_id): Path<String>,
+) -> AppResult<UserResponse> {
+    let _user = repo.users.get(user_id.as_str()).await?;
     Ok(UserResponse::default())
 }
 
