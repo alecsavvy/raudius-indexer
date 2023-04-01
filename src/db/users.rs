@@ -9,7 +9,7 @@ pub struct UserRepository {
 
 impl UserRepository {
     pub fn new(db: &Database) -> Self {
-        let collection = db.collection("Users");
+        let collection = db.collection("users");
         Self { collection }
     }
 

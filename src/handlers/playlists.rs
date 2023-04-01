@@ -1,4 +1,6 @@
-use crate::{api::PlaylistResponse, AppResult};
+use crate::{
+    actions::Playlist, api::PlaylistResponse, db::playlists::PlaylistRepository, AppResult,
+};
 /*
    REST ROUTES
 */
@@ -9,7 +11,8 @@ pub async fn get_playlist() -> AppResult<PlaylistResponse> {
 /*
    ENTITY MANAGER ROUTES
 */
-pub async fn create_playlist() -> AppResult {
+pub async fn create_playlist(repo: &PlaylistRepository, playlist: Playlist) -> AppResult {
+    repo.insert(playlist).await?;
     Ok(())
 }
 

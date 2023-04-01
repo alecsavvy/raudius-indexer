@@ -1,6 +1,9 @@
 use mongodb::Database;
 
-use self::{blocks::BlockRepository, tracks::TrackRepository, users::UserRepository};
+use self::{
+    blocks::BlockRepository, playlists::PlaylistRepository, tracks::TrackRepository,
+    users::UserRepository,
+};
 
 pub mod blocks;
 pub mod entities;
@@ -14,6 +17,7 @@ pub struct Repository {
     pub tracks: TrackRepository,
     pub users: UserRepository,
     pub blocks: BlockRepository,
+    pub playlists: PlaylistRepository,
 }
 
 impl Repository {
@@ -22,6 +26,7 @@ impl Repository {
             tracks: TrackRepository::new(&db),
             users: UserRepository::new(&db),
             blocks: BlockRepository::new(&db),
+            playlists: PlaylistRepository::new(&db),
         }
     }
 }
