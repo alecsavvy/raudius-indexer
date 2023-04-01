@@ -4,6 +4,7 @@ use self::{blocks::BlockRepository, tracks::TrackRepository, users::UserReposito
 
 pub mod blocks;
 pub mod entities;
+pub mod playlists;
 pub mod tracks;
 pub mod users;
 

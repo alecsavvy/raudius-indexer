@@ -66,7 +66,7 @@ pub struct Track {
     pub signer: String,
 }
 
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Clone)]
 pub struct Playlist {
     pub user_id: String,
     pub entity_id: String,

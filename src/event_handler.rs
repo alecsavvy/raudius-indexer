@@ -8,7 +8,11 @@ use crate::{
         event_data::{ManageEntity, ManageIsVerified},
         Event as EmEvent,
     },
-    handlers::tracks::create_track,
+    handlers::{
+        playlists::{create_playlist, update_playlist},
+        tracks::{create_track, update_track},
+        users::{create_user, update_user},
+    },
     AppResult,
 };
 
@@ -36,7 +40,15 @@ async fn handle_entity(repo: Repository, event: &ManageEntity) -> AppResult {
     let action = serde_json::from_value::<Actions>(json)?;
 
     match action {
+        // Track Actions
         Actions::CreateTrack(track) => create_track(&repo.tracks, track).await,
+        Actions::UpdateTrack(track) => update_track().await,
+        // User Actions
+        Actions::CreateUser(user) => create_user().await,
+        Actions::UpdateUser(user) => update_user().await,
+        // Playlist Actions
+        Actions::CreatePlaylist(playlist) => create_playlist().await,
+        Actions::UpdatePlaylist(playlist) => update_playlist().await,
         _ => Ok(()),
     }
 }
