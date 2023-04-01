@@ -10,7 +10,9 @@ mod entity_manager;
 use entity_manager::EntityManager;
 
 mod actions;
+#[allow(dead_code)] // codegen
 mod api;
+#[allow(dead_code)] // experimental
 mod db;
 mod event_handler;
 mod handlers;
