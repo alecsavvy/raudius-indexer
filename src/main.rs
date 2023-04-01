@@ -1,7 +1,6 @@
 use error::AppError;
 use mongodb::{options::ClientOptions, Client};
 use serde::Deserialize;
-use std::error::Error;
 use tokio::join;
 use tracing_subscriber;
 

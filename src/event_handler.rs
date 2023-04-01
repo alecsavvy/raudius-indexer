@@ -8,11 +8,7 @@ use crate::{
         event_data::{ManageEntity, ManageIsVerified},
         Event as EmEvent,
     },
-    handlers::{
-        playlists::{create_playlist, update_playlist},
-        tracks::{create_track, update_track},
-        users::{create_user, update_user},
-    },
+    handlers::{playlists::create_playlist, tracks::create_track, users::create_user},
     AppResult,
 };
 

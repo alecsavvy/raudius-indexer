@@ -2,8 +2,9 @@ use axum::{extract::Path, Extension, Json};
 
 use crate::{
     actions::User,
-    api::UserResponse,
+    api::{User as InnerUserResponse, UserResponse},
     db::{users::UserRepository, Repository},
+    error::AppError,
     AppResult,
 };
 /*
@@ -13,8 +14,13 @@ pub async fn get_user(
     Extension(repo): Extension<Repository>,
     Path(user_id): Path<String>,
 ) -> AppResult<Json<UserResponse>> {
-    //let _user = repo.users.get(user_id.as_str()).await?;
-    let res = Json(UserResponse::default());
+    let user = repo.users.get(user_id.as_str()).await?;
+    let user = user.ok_or_else(|| AppError::UserNotFound(user_id))?;
+    let data = Some(Box::new(InnerUserResponse {
+        id: user.user_id,
+        ..Default::default()
+    }));
+    let res = Json(UserResponse { data });
     Ok(res)
 }
 
@@ -26,6 +32,6 @@ pub async fn create_user(repo: &UserRepository, user: User) -> AppResult {
     Ok(())
 }
 
-pub async fn update_user() -> AppResult {
+pub async fn _update_user() -> AppResult {
     Ok(())
 }

@@ -1,6 +1,6 @@
 use mongodb::{bson::doc, error::Error, Collection, Database};
 
-use crate::actions::User;
+use crate::{actions::User, error::AppError};
 
 #[derive(Debug, Clone)]
 pub struct UserRepository {
@@ -19,11 +19,11 @@ impl UserRepository {
     }
 
     /// uses entity id
-    pub async fn get(&self, entity_id: &str) -> Result<User, Error> {
+    pub async fn get(&self, entity_id: &str) -> Result<Option<User>, Error> {
         let user = self
             .collection
             .find_one(doc! {"entity_id": entity_id}, None)
             .await?;
-        Ok(user.unwrap())
+        Ok(user)
     }
 }

@@ -16,6 +16,6 @@ pub async fn create_playlist(repo: &PlaylistRepository, playlist: Playlist) -> A
     Ok(())
 }
 
-pub async fn update_playlist() -> AppResult {
+pub async fn _update_playlist() -> AppResult {
     Ok(())
 }

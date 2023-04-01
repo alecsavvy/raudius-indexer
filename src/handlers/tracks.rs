@@ -14,6 +14,6 @@ pub async fn create_track(repo: &TrackRepository, track: Track) -> AppResult {
     Ok(())
 }
 
-pub async fn update_track() -> AppResult {
+pub async fn _update_track() -> AppResult {
     Ok(())
 }
