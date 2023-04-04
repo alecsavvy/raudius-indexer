@@ -26,9 +26,4 @@ impl TrackRepository {
             .await?;
         Ok(track.unwrap())
     }
-
-    pub async fn get_by_cid(&self, cid: &str) -> Result<Track, Error> {
-        let track = self.collection.find_one(doc! {"cid": cid}, None).await?;
-        Ok(track.unwrap())
-    }
 }

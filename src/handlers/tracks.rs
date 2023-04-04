@@ -1,8 +1,19 @@
-use crate::{actions::Track, api::TrackResponse, db::tracks::TrackRepository, AppResult};
+use axum::{extract::Path, Extension};
+
+use crate::{
+    actions::Track,
+    api::TrackResponse,
+    db::{tracks::TrackRepository, Repository},
+    AppResult,
+};
 /*
    REST ROUTES
 */
-pub async fn get_track() -> AppResult<TrackResponse> {
+pub async fn get_track(
+    Extension(repo): Extension<Repository>,
+    Path(track_id): Path<String>,
+) -> AppResult<TrackResponse> {
+    let track = repo.tracks.get(track_id.as_str()).await?;
     Ok(TrackResponse::default())
 }
 

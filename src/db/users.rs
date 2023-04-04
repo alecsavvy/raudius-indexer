@@ -1,10 +1,9 @@
+use crate::db::entities::users::Model as UserModel;
 use mongodb::{bson::doc, error::Error, Collection, Database};
-
-use crate::{actions::User, error::AppError};
 
 #[derive(Debug, Clone)]
 pub struct UserRepository {
-    collection: Collection<User>,
+    collection: Collection<UserModel>,
 }
 
 impl UserRepository {
@@ -13,16 +12,16 @@ impl UserRepository {
         Self { collection }
     }
 
-    pub async fn insert(&self, user: User) -> Result<User, Error> {
+    pub async fn insert(&self, user: UserModel) -> Result<UserModel, Error> {
         self.collection.insert_one(user.clone(), None).await?;
         Ok(user)
     }
 
     /// uses entity id
-    pub async fn get(&self, entity_id: &str) -> Result<Option<User>, Error> {
+    pub async fn get(&self, entity_id: &str) -> Result<Option<UserModel>, Error> {
         let user = self
             .collection
-            .find_one(doc! {"entity_id": entity_id}, None)
+            .find_one(doc! {"user_id": entity_id}, None)
             .await?;
         Ok(user)
     }

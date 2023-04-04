@@ -1,4 +1,5 @@
 use ethcontract::Event;
+use hash_ids::HashIds;
 use tracing::info;
 
 use crate::{
