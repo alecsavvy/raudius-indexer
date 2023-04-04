@@ -1,6 +1,7 @@
 use mongodb::bson::DateTime;
+use serde::{Deserialize, Serialize};
 
-#[derive(Clone, Debug, PartialEq)]
+#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
 pub struct Model {
     pub blockhash: Option<String>,
     pub blocknumber: Option<i32>,

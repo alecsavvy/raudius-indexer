@@ -38,10 +38,10 @@ async fn handle_entity(repo: Repository, event: &ManageEntity) -> AppResult {
 
     match action {
         // Track Actions
-        Actions::CreateTrack(track) => create_track(&repo.tracks, track).await,
+        // Actions::CreateTrack(track) => create_track(&repo.tracks, track).await,
         // Actions::UpdateTrack(track) => update_track().await,
         // User Actions
-        Actions::CreateUser(user) => create_user(&repo.users, user).await,
+        // Actions::CreateUser(user) => create_user(&repo.users, user).await,
         // Actions::UpdateUser(user) => update_user().await,
         // Playlist Actions
         Actions::CreatePlaylist(playlist) => create_playlist(&repo.playlists, playlist).await,

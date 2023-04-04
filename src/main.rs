@@ -9,6 +9,7 @@ mod entity_manager;
 mod actions;
 #[allow(dead_code)] // codegen
 mod api;
+mod content;
 #[allow(dead_code)] // experimental
 mod db;
 mod error;
