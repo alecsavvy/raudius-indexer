@@ -6,6 +6,7 @@ pub mod entities;
 pub mod entity_manager;
 pub mod index_blocks;
 pub mod server;
+mod process_block;
 
 pub type AppResult<T = ()> = Result<T, Box<dyn std::error::Error>>;
 
