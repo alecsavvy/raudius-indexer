@@ -78,28 +78,6 @@
       "constant": false,
       "inputs": [
         {
-          "name": "name",
-          "type": "string"
-        },
-        {
-          "name": "version",
-          "type": "string"
-        },
-        {
-          "name": "chainId",
-          "type": "uint256"
-        }
-      ],
-      "name": "initialize",
-      "outputs": [],
-      "payable": false,
-      "stateMutability": "nonpayable",
-      "type": "function"
-    },
-    {
-      "constant": false,
-      "inputs": [
-        {
           "name": "_verifierAddress",
           "type": "address"
         },
