@@ -1,6 +1,7 @@
 use serde::Deserialize;
 use tracing_subscriber;
 
+pub mod entities;
 #[allow(unused_imports)]
 pub mod entity_manager;
 pub mod index_blocks;
