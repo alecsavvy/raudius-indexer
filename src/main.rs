@@ -12,7 +12,7 @@ pub type AppResult<T = ()> = Result<T, Box<dyn std::error::Error>>;
 pub struct Config {
     pub nethermind_rpc: String,
     pub entity_manager_address: String,
-    pub db_connection_string: String,
+    pub database_url: String,
     pub server_addr: String,
 }
 
