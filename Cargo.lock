@@ -822,12 +822,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "hash-ids"
-version = "0.2.1"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "9289cbc8064a1c2f505c92d4d17f7fe5050d487728c19cee7936bd204069bc9d"
-
-[[package]]
 name = "hashbrown"
 version = "0.12.3"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -1596,19 +1590,18 @@ dependencies = [
 name = "raudius-indexer"
 version = "0.1.0"
 dependencies = [
- "anyhow",
  "axum",
  "dotenv",
  "envy",
  "ethcontract",
  "ethcontract-generate",
  "futures",
- "hash-ids",
  "sea-orm",
  "serde",
  "serde_json",
  "strum",
  "strum_macros",
+ "thiserror",
  "tokio",
  "tracing",
  "tracing-subscriber",
@@ -2200,24 +2193,24 @@ dependencies = [
 
 [[package]]
 name = "strum"
-version = "0.24.1"
+version = "0.25.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "063e6045c0e62079840579a7e47a355ae92f60eb74daaf156fb1e84ba164e63f"
+checksum = "290d54ea6f91c969195bdbcd7442c8c2a2ba87da8bf60a7ee86a235d4bc1e125"
 dependencies = [
  "strum_macros",
 ]
 
 [[package]]
 name = "strum_macros"
-version = "0.24.3"
+version = "0.25.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "1e385be0d24f186b4ce2f9982191e7101bb737312ad61c1f2f984f34bcf85d59"
+checksum = "fe9f3bd7d2e45dcc5e265fbb88d6513e4747d8ef9444cf01a533119bce28a157"
 dependencies = [
  "heck 0.4.1",
  "proc-macro2",
  "quote",
  "rustversion",
- "syn 1.0.109",
+ "syn 2.0.12",
 ]
 
 [[package]]

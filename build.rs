@@ -3,12 +3,12 @@ use ethcontract_generate::ContractBuilder;
 
 fn main() {
     // Prepare filesystem paths.
-    let dest = std::path::Path::new("./src/entity_manager.rs");
+    let dest = std::path::Path::new("./src/generated/contracts/entity_manager.rs");
 
     // Load a contract.
     let contract = TruffleLoader::new()
         .load_contract_from_file("./EntityManager.json")
-        .unwrap();
+        .expect("issue loading entity manager abi");
 
     // Generate bindings for it.
     ContractBuilder::new()
@@ -19,7 +19,7 @@ fn main() {
         .add_event_derive("serde::Serialize")
         .add_event_derive("serde::Deserialize")
         .generate(&contract)
-        .unwrap()
+        .expect("issue generating contract bindings")
         .write_to_file(dest)
-        .unwrap();
+        .expect("issue writing generated contract output");
 }
